@@ -3,6 +3,7 @@ package andreibri.u5_w2_d3.services;
 import andreibri.u5_w2_d3.entities.Author;
 import andreibri.u5_w2_d3.payloads.AuthorRequest;
 import andreibri.u5_w2_d3.repository.AuthorRepository;
+import exceptions.NotFoundException;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,18 @@ public class AuthorService {
     }
 
     public Author getById(UUID id) {
-        return authorRepo.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
+        return authorRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Autore con id " + id + " non trovato"));
+    }
+
+    public Author update(UUID id, AuthorRequest req) {
+        Author existing = this.getById(id);
+        existing.setFirstName(req.firstName);
+        existing.setLastName(req.lastName);
+        existing.setEmail(req.email);
+        existing.setBirthDate(req.birthDate);
+        existing.setAvatar("https://ui-avatars.com/api/?name=" + req.firstName + "+" + req.lastName);
+        return authorRepo.save(existing);
     }
 
     public void delete(UUID id) {

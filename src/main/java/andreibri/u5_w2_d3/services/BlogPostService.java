@@ -5,6 +5,7 @@ import andreibri.u5_w2_d3.entities.BlogPost;
 import andreibri.u5_w2_d3.payloads.BlogPostRequest;
 import andreibri.u5_w2_d3.repository.AuthorRepository;
 import andreibri.u5_w2_d3.repository.BlogPostRepository;
+import exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,19 @@ public class BlogPostService {
 
     public BlogPost getById(UUID id) {
         return blogPostRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Blog post not found"));
+                .orElseThrow(() -> new NotFoundException("BlogPost con id " + id + " non trovato"));
+    }
+
+    public BlogPost update(UUID id, BlogPostRequest req) {
+        BlogPost existing = this.getById(id);
+        Author author = authorRepo.findById(req.authorId)
+                .orElseThrow(() -> new NotFoundException("Autore con id " + req.authorId + " non trovato"));
+        existing.setCategory(req.category);
+        existing.setTitle(req.title);
+        existing.setContent(req.content);
+        existing.setReadingTime(req.readingTime);
+        existing.setAuthor(author);
+        return blogPostRepo.save(existing);
     }
 
     public void deleteById(UUID id) {
