@@ -3,12 +3,16 @@ package andreibri.u5_w2_d3.services;
 import andreibri.u5_w2_d3.entities.Author;
 import andreibri.u5_w2_d3.payloads.AuthorRequest;
 import andreibri.u5_w2_d3.repository.AuthorRepository;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Service
 public class AuthorService {
 
@@ -29,11 +33,11 @@ public class AuthorService {
 
     }
 
-    public List<Author> findAll() {
+    public List<Author> getAll() {
         return authorRepo.findAll();
     }
 
-    public Author findById(UUID id) {
+    public Author getById(UUID id) {
         return authorRepo.findById(id).orElseThrow(() -> new RuntimeException("Author not found"));
     }
 

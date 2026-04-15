@@ -36,11 +36,11 @@ public class BlogPostService {
         return blogPostRepo.save(post);
     }
 
-    public List<BlogPost> findAll() {
+    public List<BlogPost> getAll() {
         return blogPostRepo.findAll();
     }
 
-    public BlogPost findById(UUID id) {
+    public BlogPost getById(UUID id) {
         return blogPostRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Blog post not found"));
     }
